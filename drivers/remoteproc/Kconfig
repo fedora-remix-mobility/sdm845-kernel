@@ -163,6 +163,7 @@ config PRU_REMOTEPROC
 
 config QCOM_PIL_INFO
 	tristate
+	select QCOM_RPROC_MINIDUMP
 
 config QCOM_RPROC_COMMON
 	tristate
