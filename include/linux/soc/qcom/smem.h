@@ -17,4 +17,6 @@ int qcom_smem_get_feature_code(u32 *code);
 
 int qcom_smem_bust_hwspin_lock_by_host(unsigned int host);
 
+void *qcom_smem_minidump_ready(void);
+
 #endif

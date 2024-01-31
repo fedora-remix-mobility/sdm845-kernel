@@ -270,6 +270,7 @@ struct smem_region {
  * @partitions: list of partitions of current processor/host
  * @item_count: max accepted item number
  * @socinfo:	platform device pointer
+ * @minidump:	minidump platform device pointer
  * @num_regions: number of @regions
  * @regions:	list of the memory regions defining the shared memory
  */
@@ -280,6 +281,7 @@ struct qcom_smem {
 
 	u32 item_count;
 	struct platform_device *socinfo;
+	struct platform_device *minidump;
 	struct smem_ptable *ptable;
 	struct smem_partition global_partition;
 	struct smem_partition partitions[SMEM_HOST_COUNT];
@@ -860,6 +862,15 @@ int qcom_smem_get_feature_code(u32 *code)
 }
 EXPORT_SYMBOL_GPL(qcom_smem_get_feature_code);
 
+void *qcom_smem_minidump_ready(void)
+{
+	if (__smem && __smem->minidump)
+		return platform_get_drvdata(__smem->minidump);
+	else
+		return NULL;
+}
+EXPORT_SYMBOL_GPL(qcom_smem_minidump_ready);
+
 static int qcom_smem_get_sbl_version(struct qcom_smem *smem)
 {
 	struct smem_header *header;
@@ -1236,11 +1247,20 @@ static int qcom_smem_probe(struct platform_device *pdev)
 	if (IS_ERR(smem->socinfo))
 		dev_dbg(&pdev->dev, "failed to register socinfo device\n");
 
+	smem->minidump = platform_device_register_data(&pdev->dev, "qcom_minidump_smem",
+						       PLATFORM_DEVID_NONE, NULL,
+						       0);
+	if (IS_ERR(smem->minidump)) {
+		dev_dbg(&pdev->dev, "failed to register minidump device\n");
+		smem->minidump = NULL;
+	}
+
 	return 0;
 }
 
 static void qcom_smem_remove(struct platform_device *pdev)
 {
+	platform_device_unregister(__smem->minidump);
 	platform_device_unregister(__smem->socinfo);
 
 	hwspin_lock_free(__smem->hwlock);

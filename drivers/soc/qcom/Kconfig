@@ -305,4 +305,17 @@ config QCOM_RPROC_MINIDUMP
 	  query predefined Minidump segments associated with the remote processor
 	  and check its validity and end up collecting the dump on remote processor
 	  crash during its recovery.
+
+config QCOM_MINIDUMP
+	tristate "QCOM APSS Minidump driver"
+	depends on ARCH_QCOM || COMPILE_TEST
+	depends on QCOM_SMEM
+	help
+	  This config enables Linux core infrastructure for Application
+	  processor subsystem (APSS) Minidump collection, i.e., it enables
+	  Linux client drivers to register their internal data structures
+	  and debug messages as part of the APSS Minidump table and when
+	  the SoC has crashed, these selective regions will be dumped
+	  instead of the entire RAM dump. This saves a significant amount
+	  of time and/or storage space.
 endmenu
