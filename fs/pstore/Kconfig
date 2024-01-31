@@ -81,6 +81,21 @@ config PSTORE_RAM
 
 	  For more information, see Documentation/admin-guide/ramoops.rst.
 
+config PSTORE_DYNAMIC_RAMOOPS
+	bool "Reserve ramoops region dynamically"
+	select PSTORE_RAM
+	help
+	  This enables the dynamic reservation of ramoops region for a special case
+	  where there is no need to access the logs from pstorefs on next boot;
+	  instead there is separate backend mechanism like minidump present which has
+	  awareness about the dynamic ramoops region and can recover the logs. This is
+	  enabled via command line parameter dyn_ramoops_size=<size> and should not be
+	  used in absence of separate backend which knows how to recover this dynamic
+	  region.
+
+	  Note whenever this config is selected ramoops driver will be built statically
+	  into kernel.
+
 config PSTORE_ZONE
 	tristate
 	depends on PSTORE

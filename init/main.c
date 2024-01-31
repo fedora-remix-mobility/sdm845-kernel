@@ -100,6 +100,8 @@
 #include <linux/init_syscalls.h>
 #include <linux/stackdepot.h>
 #include <linux/randomize_kstack.h>
+#include <linux/moduleloader.h>
+#include <linux/pstore_ram.h>
 #include <linux/pidfs.h>
 #include <linux/ptdump.h>
 #include <net/net_namespace.h>
@@ -916,6 +918,7 @@ void start_kernel(void)
 	page_address_init();
 	pr_notice("%s", linux_banner);
 	setup_arch(&command_line);
+	setup_dynamic_ramoops();
 	/* Static keys and static calls are needed by LSMs */
 	jump_label_init();
 	static_call_init();

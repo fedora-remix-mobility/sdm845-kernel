@@ -39,4 +39,9 @@ struct ramoops_platform_data {
 	struct persistent_ram_ecc_info ecc_info;
 };
 
+#ifdef CONFIG_PSTORE_DYNAMIC_RAMOOPS
+void __init setup_dynamic_ramoops(void);
+#else
+static inline void __init setup_dynamic_ramoops(void) {}
+#endif
 #endif

@@ -35,6 +35,13 @@ memory are implementation defined, and won't work on many ARMs such as omaps.
 Setting ``mem_type=2`` attempts to treat the memory region as normal memory,
 which enables full cache on it. This can improve the performance.
 
+Ramoops supports its memory to be allocated dynamically during early boot
+for plaforms that do not have support for warm boot i.e., no assurance
+that Ram content will be preserved across boot and for these platforms
+giving static Ramoops memory is not necessary as it has separate backend
+mechanism to retrieve ramoops content on system failure. More about
+how to enable Dynamic ramoops in ``Setting the parameters`` A.b section.
+
 The memory area is divided into ``record_size`` chunks (also rounded down to
 power of two) and each kmesg dump writes a ``record_size`` chunk of
 information.
@@ -61,7 +68,7 @@ Setting the parameters
 
 Setting the ramoops parameters can be done in several different manners:
 
- A. Use the module parameters (which have the names of the variables described
+ A.a  Use the module parameters (which have the names of the variables described
  as before). For quick debugging, you can also reserve parts of memory during
  boot and then use the reserved memory for ramoops. For example, assuming a
  machine with > 128 MB of memory, the following kernel command line will tell
@@ -69,6 +76,20 @@ Setting the ramoops parameters can be done in several different manners:
  ramoops region at 128 MB boundary::
 
 	mem=128M ramoops.mem_address=0x8000000 ramoops.ecc=1
+
+ A.b  Ramoops memory can be also be dynamically reserved by Kernel and in such
+ scenario ``mem_address`` i.e., Ramoops base address can be anywhere in the RAM
+ instead of being fixed and predefined. A separate command line option
+ ``dyn_ramoops_size=<size>`` and kernel config CONFIG_PSTORE_DYNAMIC_RAMOOPS
+ are provided to facilitate Dynamic Ramoops memory reservation during early boot.
+ The command line option and the config should only be used in the presence of
+ separate backend which knows how to recover Dynamic Ramoops region otherwise
+ regular ramoops functionality will be impacted.
+ ``mem_size`` should not be used if Dynamic Ramoops support is requested and if
+ both are given ``mem_size`` value is overwritten with ``dyn_ramoops_size`` value
+ i.e., Dynamic Ramoops takes precedence::
+
+	dyn_ramoops_size=2M ramoops.console_size=2097152
 
  B. Use Device Tree bindings, as described in
  ``Documentation/devicetree/bindings/reserved-memory/ramoops.yaml``.

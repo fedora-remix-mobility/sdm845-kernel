@@ -20,6 +20,7 @@
 #include <linux/compiler.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+#include <linux/memblock.h>
 #include <linux/mm.h>
 
 #include "internal.h"
@@ -107,6 +108,59 @@ struct ramoops_context {
 };
 
 static struct platform_device *dummy;
+static struct resource dyn_ramoops_res = {
+	.name  = "ramoops",
+	.start = 0,
+	.end   = 0,
+	.flags = IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
+	.desc  = IORES_DESC_NONE,
+};
+static int dyn_ramoops_size;
+
+#ifdef CONFIG_PSTORE_DYNAMIC_RAMOOPS
+static int __init parse_dyn_ramoops_size(char *p)
+{
+	char *tmp;
+
+	dyn_ramoops_size = memparse(p, &tmp);
+	if (p == tmp) {
+		pr_err("ramoops: memory size expected\n");
+		dyn_ramoops_size = 0;
+		return -EINVAL;
+	}
+
+	return 0;
+}
+early_param("dyn_ramoops_size", parse_dyn_ramoops_size);
+
+/*
+ * setup_dynamic_ramoops() - Reserve memory for dynamic ramoops
+ *
+ * Enables dynamic reserve memory support for ramoops through
+ * command line.
+ */
+void __init setup_dynamic_ramoops(void)
+{
+	unsigned long long ramoops_base;
+	unsigned long long ramoops_size;
+
+	if (!dyn_ramoops_size)
+		return;
+
+	ramoops_base = memblock_phys_alloc_range(dyn_ramoops_size, SMP_CACHE_BYTES,
+						 0, MEMBLOCK_ALLOC_NOLEAKTRACE);
+	if (!ramoops_base) {
+		pr_err("cannot allocate ramoops dynamic memory (size:0x%llx).\n",
+			ramoops_size);
+		dyn_ramoops_size = 0;
+		return;
+	}
+
+	dyn_ramoops_res.start = ramoops_base;
+	dyn_ramoops_res.end = ramoops_base + dyn_ramoops_size - 1;
+	insert_resource(&iomem_resource, &dyn_ramoops_res);
+}
+#endif
 
 static int ramoops_pstore_open(struct pstore_info *psi)
 {
@@ -930,13 +984,19 @@ static void __init ramoops_register_dummy(void)
 
 	/*
 	 * Prepare a dummy platform data structure to carry the module
-	 * parameters. If mem_size isn't set, then there are no module
-	 * parameters, and we can skip this.
+	 * parameters.
+	 *
+	 * dyn_ramoops_size takes precedence over mem_size if it is
+	 * enabled and valid.
 	 */
-	if (!mem_size)
+	if (!dyn_ramoops_size && !mem_size)
 		return;
 
 	pr_info("using module parameters\n");
+	if (dyn_ramoops_size) {
+		mem_size = dyn_ramoops_size;
+		mem_address = dyn_ramoops_res.start;
+	}
 
 	memset(&pdata, 0, sizeof(pdata));
 	pdata.mem_size = mem_size;
