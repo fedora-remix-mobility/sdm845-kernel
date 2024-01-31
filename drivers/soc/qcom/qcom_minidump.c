@@ -18,8 +18,10 @@
 #include <linux/mutex.h>
 #include <linux/platform_device.h>
 #include <linux/printk.h>
+#include <linux/pstore_ram.h>
 #include <linux/soc/qcom/smem.h>
 #include <linux/string.h>
+#include <linux/workqueue.h>
 #include <soc/qcom/qcom_minidump.h>
 
 #include "qcom_minidump_internal.h"
@@ -56,12 +58,22 @@ struct minidump_elfhdr {
  * @dev: Minidump backend device
  * @apss_data: APSS driver data
  * @md_lock: Lock to protect access to APSS minidump table
+ * @work: Minidump work for any required execution in process context.
+ * @nb_cookie: Save the cookie, will be used for unregistering the callback.
  */
 struct minidump {
 	struct minidump_elfhdr	 elf;
 	struct device		 *dev;
 	struct minidump_ss_data	 *apss_data;
 	struct mutex		 md_lock;
+	struct work_struct	 work;
+	void			 *nb_cookie;
+};
+
+static LIST_HEAD(apss_md_rlist);
+struct md_region_list {
+	struct qcom_minidump_region md_region;
+	struct list_head list;
 };
 
 /*
@@ -530,6 +542,58 @@ static int qcom_apss_md_table_init(struct minidump *md,
 	return 0;
 }
 
+static int register_ramoops_region(const char *name, int id, void *vaddr,
+				   phys_addr_t paddr, size_t size)
+{
+	struct qcom_minidump_region *md_region;
+	struct md_region_list *mdr_list;
+	int ret;
+
+	mdr_list = kzalloc(sizeof(*mdr_list), GFP_KERNEL);
+	if (!mdr_list)
+		return -ENOMEM;
+
+	md_region = &mdr_list->md_region;
+	scnprintf(md_region->name, sizeof(md_region->name), "K%s%d", name, id);
+	md_region->virt_addr = vaddr;
+	md_region->phys_addr = paddr;
+	md_region->size = size;
+	ret = qcom_minidump_region_register(md_region);
+	if (ret < 0) {
+		pr_err("failed to register region in minidump: err: %d\n", ret);
+		return ret;
+	}
+
+	list_add(&mdr_list->list, &apss_md_rlist);
+
+	return 0;
+}
+
+static void register_ramoops_minidump_cb(struct work_struct *work)
+{
+	struct minidump *md = container_of(work, struct minidump, work);
+
+	md->nb_cookie = register_ramoops_info_notifier(register_ramoops_region);
+	if (IS_ERR_OR_NULL(md->nb_cookie)) {
+		pr_err("Fail to register ramoops info notifier\n");
+		md->nb_cookie = NULL;
+	}
+}
+
+static void qcom_ramoops_minidump_unregister(void)
+{
+	struct md_region_list *mdr_list;
+	struct md_region_list *tmp;
+
+	list_for_each_entry_safe(mdr_list, tmp, &apss_md_rlist, list) {
+		struct qcom_minidump_region *region;
+
+		region = &mdr_list->md_region;
+		qcom_minidump_region_unregister(region);
+		list_del(&mdr_list->list);
+	}
+}
+
 static void qcom_apss_md_table_exit(struct minidump_ss_data *mdss_data)
 {
 	memset(mdss_data->md_ss_toc, cpu_to_le32(0), sizeof(*mdss_data->md_ss_toc));
@@ -575,6 +639,22 @@ static int qcom_apss_minidump_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, md);
 
+	/*
+	 * Use separate context for registering ramoops region via workqueue
+	 * as minidump probe can get called in same context of platform device
+	 * register call from smem driver and further call to qcom_smem_minidump_ready()
+	 * can return -EPROBE_DEFER as __smem->minidump is not yet initialized because
+	 * of same context and it can only initialized after return from probe.
+	 *
+	 * qcom_apss_minidump_probe()
+	 *   register_ramoops_minidump_cb()
+	 *     register_ramoops_region()
+	 *       qcom_minidump_region_register()
+	 *         qcom_smem_minidump_ready()
+	 */
+	INIT_WORK(&md->work, register_ramoops_minidump_cb);
+	schedule_work(&md->work);
+
 	return ret;
 }
 
@@ -582,6 +662,10 @@ static void qcom_apss_minidump_remove(struct platform_device *pdev)
 {
 	struct minidump *md = platform_get_drvdata(pdev);
 
+	flush_work(&md->work);
+	qcom_ramoops_minidump_unregister();
+	if (md->nb_cookie)
+		unregister_ramoops_info_notifier(md->nb_cookie);
 	qcom_apss_md_table_exit(md->apss_data);
 }
 
