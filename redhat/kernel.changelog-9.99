@@ -1,3 +1,7 @@
+* Thu Apr 10 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.4.sdm845]
+- Revert "fedora: arm64: disable CONFIG_QCOM_PD_MAPPER" (Sam Day)
+Resolves: 
+
 * Tue Apr 08 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.3.sdm845]
 - Enable CONFIG_MTD_PHRAM=m (Sam Day)
 Resolves: 
