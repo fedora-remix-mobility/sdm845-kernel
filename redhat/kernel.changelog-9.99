@@ -1,3 +1,17 @@
+* Sat Apr 12 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.5.sdm845]
+- soc: qcom: register ramoops region with APSS minidump (Mukesh Ojha)
+- pstore/ram: Add ramoops information notifier support (Mukesh Ojha)
+- pstore/ram: Add dynamic ramoops region support through commandline (Mukesh Ojha)
+- MAINTAINERS: Add entry for minidump related files (Mukesh Ojha)
+- soc: qcom: Add Qualcomm APSS minidump kernel driver (Mukesh Ojha)
+- init: export linux_banner data variable (Mukesh Ojha)
+- remoteproc: qcom: Remove minidump related data from qcom_common.c (Mukesh Ojha)
+- remoteproc: qcom_q6v5_pas: Use qcom_rproc_minidump() (Mukesh Ojha)
+- soc: qcom: Add qcom_rproc_minidump module (Mukesh Ojha)
+- docs: qcom: Add qualcomm minidump guide (Mukesh Ojha)
+- HACK: enable pstore ftrace + userspace logging (Sam Day)
+Resolves: 
+
 * Thu Apr 10 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.4.sdm845]
 - Revert "fedora: arm64: disable CONFIG_QCOM_PD_MAPPER" (Sam Day)
 Resolves: 
