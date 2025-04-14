@@ -1,3 +1,7 @@
+* Mon Apr 14 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.6.sdm845]
+- HACK: force a bunch of config to be consistent with pmOS (Sam Day)
+Resolves: 
+
 * Sat Apr 12 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.5.sdm845]
 - soc: qcom: register ramoops region with APSS minidump (Mukesh Ojha)
 - pstore/ram: Add ramoops information notifier support (Mukesh Ojha)
