@@ -27,6 +27,9 @@ KBUILD_CFLAGS += $(call cc-option,-Wno-error=unterminated-string-initialization)
 # disable error=unused-variable as panel-samsung-s6e3ha8.c has a few
 KBUILD_CFLAGS += $(call cc-option,-Wno-error=unused-variable)
 
+# panel-lg-sw43408.c
+KBUILD_CFLAGS += $(call cc-option,-Wno-error=unused-const-variable)
+
 ifneq ($(CONFIG_FRAME_WARN),0)
 KBUILD_CFLAGS += -Wframe-larger-than=$(CONFIG_FRAME_WARN)
 endif
