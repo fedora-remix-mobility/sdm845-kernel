@@ -237,7 +237,7 @@ Summary: The Linux kernel
 # ynl
 %define with_ynl       %{?_with_ynl:          1} %{?!_with_ynl:          0}
 # kernel-debuginfo
-%define with_debuginfo %{?_without_debuginfo: 0} %{?!_without_debuginfo: 1}
+%define with_debuginfo 0
 # kernel-abi-stablelists
 %define with_kernel_abi_stablelists %{?_without_kernel_abi_stablelists: 0} %{?!_without_kernel_abi_stablelists: 1}
 # internal samples and selftests
