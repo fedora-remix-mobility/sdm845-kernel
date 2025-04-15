@@ -99,7 +99,7 @@ Summary: The Linux kernel
 %global signkernel 0
 
 # Sign modules on all arches
-%global signmodules 1
+%global signmodules 0
 
 # Compress modules only for architectures that build modules
 %ifarch noarch
