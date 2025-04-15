@@ -95,8 +95,18 @@
 %endif
 
 Summary: The Linux kernel
+%if 0%{?fedora}
+%define secure_boot_arch x86_64
+%else
+%define secure_boot_arch x86_64 aarch64 s390x ppc64le
+%endif
 
+# Signing for secure boot authentication
+%ifarch %{secure_boot_arch}
+%global signkernel 1
+%else
 %global signkernel 0
+%endif
 
 # Sign modules on all arches
 %global signmodules 1
