@@ -1,3 +1,9 @@
+* Tue Apr 15 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.17.sdm845]
+- Revert "HACK: disable kernel signing" (Sam Day)
+- Revert "HACK: disable module signing" (Sam Day)
+- Revert "HACK: ensure openssl build deps are added" (Sam Day)
+Resolves: 
+
 * Tue Apr 15 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.16.sdm845]
 - HACK: restore all common/generic options (Sam Day)
 Resolves: 
