@@ -1,1 +1,1 @@
-# CONFIG_BT_LE is not set
+CONFIG_BT_LE=y

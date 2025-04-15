@@ -1,1 +1,1 @@
-CONFIG_MTD=y
+CONFIG_MTD=n
