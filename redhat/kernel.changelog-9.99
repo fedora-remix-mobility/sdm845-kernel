@@ -1,3 +1,7 @@
+* Tue Apr 15 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.12.sdm845]
+- HACK: force disable debuginfo (Sam Day)
+Resolves: 
+
 * Tue Apr 15 2025 Sam Day <me@samcday.com> [6.14.0-0.rc5.11.sdm845]
 - HACK: nuke all of ARK's baseline config (Sam Day)
 Resolves: 
