@@ -1,1 +1,1 @@
-CONFIG_MTD_PHRAM=m
+# CONFIG_MTD_PHRAM is not set
