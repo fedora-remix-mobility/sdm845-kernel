@@ -1,0 +1,18 @@
+# Symbol: VIDEO_BU64748 [=n]
+# Type  : tristate
+# Defined at drivers/media/i2c/Kconfig:793
+#   Prompt: BU64748 lens voice coil support
+#   Depends on: MEDIA_SUPPORT [=m] && I2C [=y] && VIDEO_DEV [=m]
+#   Visible if: MEDIA_SUPPORT [=m] && I2C [=y] && VIDEO_DEV [=m] && MEDIA_CAMERA_SUPPORT [=y]
+#   Location:
+#     -> Device Drivers
+#       -> Multimedia support (MEDIA_SUPPORT [=m])
+#         -> Media ancillary drivers
+#           -> Lens drivers
+#             -> BU64748 lens voice coil support (VIDEO_BU64748 [=n])
+# Selects: MEDIA_CONTROLLER [=y] && VIDEO_V4L2_SUBDEV_API [=y] && V4L2_ASYNC [=m]
+# 
+# 
+# 
+# Commit: b30d1bdf315f5 (media: i2c: Add driver for ROHM BU64748)
+# CONFIG_VIDEO_BU64748 is not set

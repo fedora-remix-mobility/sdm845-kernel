@@ -1,0 +1,15 @@
+# Symbol: QCOM_MINIDUMP [=n]
+# Type  : tristate
+# Defined at drivers/soc/qcom/Kconfig:309
+#   Prompt: QCOM APSS Minidump driver
+#   Depends on: (ARCH_QCOM [=y] || COMPILE_TEST [=n]) && QCOM_SMEM [=m]
+#   Location:
+#     -> Device Drivers
+#       -> SOC (System On Chip) specific Drivers
+#         -> Qualcomm SoC drivers
+#           -> QCOM APSS Minidump driver (QCOM_MINIDUMP [=n])
+# 
+# 
+# 
+# Commit: e884ffa3a8ee0 (soc: qcom: Add Qualcomm APSS minidump kernel driver)
+# CONFIG_QCOM_MINIDUMP is not set

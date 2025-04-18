@@ -1,0 +1,15 @@
+# Symbol: PSTORE_DYNAMIC_RAMOOPS [=n]
+# Type  : bool
+# Defined at fs/pstore/Kconfig:84
+#   Prompt: Reserve ramoops region dynamically
+#   Depends on: MISC_FILESYSTEMS [=y]
+#   Location:
+#     -> File systems
+#       -> Miscellaneous filesystems (MISC_FILESYSTEMS [=y])
+#         -> Reserve ramoops region dynamically (PSTORE_DYNAMIC_RAMOOPS [=n])
+# Selects: PSTORE_RAM [=m]
+# 
+# 
+# 
+# Commit: 150321fc18c59 (pstore/ram: Add dynamic ramoops region support through commandline)
+# CONFIG_PSTORE_DYNAMIC_RAMOOPS is not set
