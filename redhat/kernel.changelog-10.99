@@ -1,3 +1,9 @@
+* Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.14.sdm845]
+- Enable CONFIG_BATTERY_QCOM_FG (Sam Day)
+- Enable CONFIG_SND_SOC_QDSP6_Q6VOICE (Sam Day)
+- Enable CONFIG_DRM_PANEL_SAMSUNG_S6E3FC2X01 (Sam Day)
+Resolves: 
+
 * Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.13.sdm845]
 - Enable CONFIG_SND_SOC_TFA98XX (Sam Day)
 - Enable CONFIG_INPUT_QCOM_SPMI_HAPTICS (Sam Day)
