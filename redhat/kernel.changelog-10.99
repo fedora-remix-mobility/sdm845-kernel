@@ -1,3 +1,7 @@
+* Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.10.sdm845]
+- I am going to fucking scream (Sam Day)
+Resolves: 
+
 * Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.9.sdm845]
 - ah, ok. CONFIG_WERROR is actually special. (Sam Day)
 Resolves: 
