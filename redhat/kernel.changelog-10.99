@@ -1,3 +1,7 @@
+* Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.3.sdm845]
+- fedora: enable imx sensor drivers (Sam Day)
+Resolves: 
+
 * Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.2.sdm845]
 - fix DISTLOCALVERSION (Sam Day)
 Resolves: 
