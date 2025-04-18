@@ -707,6 +707,7 @@ BuildRequires: python3
 BuildRequires: python3-devel
 BuildRequires: python3-pyyaml
 BuildRequires: kernel-rpm-macros
+BuildRequires: libuuid-devel
 # glibc-static is required for a consistent build environment (specifically
 # CONFIG_CC_CAN_LINK_STATIC=y).
 BuildRequires: glibc-static
