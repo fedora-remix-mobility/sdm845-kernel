@@ -1,3 +1,7 @@
+* Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.8.sdm845]
+- kernel.spec: add libuuid-devel BR (Sam Day)
+Resolves: 
+
 * Fri Apr 18 2025 Sam Day <me@samcday.com> [6.15.0-0.rc2.7.sdm845]
 - I really hate ARK configs (Sam Day)
 Resolves: 
