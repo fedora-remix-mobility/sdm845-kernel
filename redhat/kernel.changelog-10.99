@@ -1,0 +1,82 @@
+* Thu Apr 17 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc2.cfb2e2c57aef.25]
+- apply -Wno-error=unterminated-string-initialization temporarily (Thorsten Leemhuis)
+Resolves: 
+
+* Thu Apr 17 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc2.cfb2e2c57aef.24]
+- redhat: enable drm panic screen with a QR code (Scott Weaver)
+- redhat: enable Rust code in ELN (Scott Weaver)
+- redhat: strip leading '(' in dist-get-buildreqs (Jan Stancek)
+- Linux v6.15.0-0.rc2.cfb2e2c57aef
+Resolves: 
+
+* Wed Apr 16 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc2.1a1d569a75f3.23]
+- Linux v6.15.0-0.rc2.1a1d569a75f3
+Resolves: 
+
+* Tue Apr 15 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc2.834a4a689699.22]
+- Linux v6.15.0-0.rc2.834a4a689699
+Resolves: 
+
+* Mon Apr 14 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc2.21]
+- Linux v6.15.0-0.rc2
+Resolves: 
+
+* Sun Apr 13 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.7cdabafc0012.20]
+- Linux v6.15.0-0.rc1.7cdabafc0012
+Resolves: 
+
+* Sat Apr 12 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.3bde70a2c827.19]
+- Linux v6.15.0-0.rc1.3bde70a2c827
+Resolves: 
+
+* Fri Apr 11 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.900241a5cc15.18]
+- Linux v6.15.0-0.rc1.900241a5cc15
+Resolves: 
+
+* Thu Apr 10 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.3b07108ada81.17]
+- Linux v6.15.0-0.rc1.3b07108ada81
+Resolves: 
+
+* Wed Apr 09 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.a24588245776.16]
+- Fix up CONFIG_CRC_ITU_T mismatch (Scott Weaver)
+- Fix up CONFIG_CRC16 mismatch (Scott Weaver)
+- Linux v6.15.0-0.rc1.a24588245776
+Resolves: 
+
+* Wed Apr 09 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.15]
+- redhat: remove kernel-ipaclones-internal package (Joe Lawrence)
+- redhat/kernel.spec.template: add net packetdrill selftests (Hangbin Liu)
+- redhat/kernel.spec.template: Build rtla with BPF sample collection (Tomas Glozar)
+Resolves: 
+
+* Tue Apr 08 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.14]
+- redhat/configs: automotive: Enable CONFIG_BOOTPARAM_HUNG_TASK_PANIC config (Dorinda Bassey)
+- samples/bpf: fix build (Gregory Bell)
+- redhat: create 'systemd-volatile-overlay' addon for UKI (Emanuele Giuseppe Esposito)
+Resolves: 
+
+* Mon Apr 07 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc1.13]
+- fedora: arm64: move some TI drivers to modular (Peter Robinson)
+- fedora: minor cleanups for 6.14 (Peter Robinson)
+- redhat/configs: enable CONFIG_I2C_MUX_PCA954x on x86 (Michal Schmidt)
+- Linux v6.15.0-0.rc1
+Resolves: 
+
+* Sun Apr 06 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc0.f4d2ef48250a.12]
+- Linux v6.15.0-0.rc0.f4d2ef48250a
+Resolves: 
+
+* Sat Apr 05 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc0.a8662bcd2ff1.11]
+- Linux v6.15.0-0.rc0.a8662bcd2ff1
+Resolves: 
+
+* Fri Apr 04 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc0.e48e99b6edf4.10]
+- Linux v6.15.0-0.rc0.e48e99b6edf4
+Resolves: 
+
+* Thu Apr 03 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc0.a2cc6ff5ec8f.9]
+- redhat: bump RHEL_MAJOR (Jan Stancek)
+- redhat/configs: enable CONFIG_AMD_3D_VCACHE for x86 on RHEL (David Arcari)
+- Linux v6.15.0-0.rc0.a2cc6ff5ec8f
+Resolves: 
+

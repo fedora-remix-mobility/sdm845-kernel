@@ -237,7 +237,7 @@ Summary: The Linux kernel
 # ynl
 %define with_ynl       %{?_with_ynl:          1} %{?!_with_ynl:          0}
 # kernel-debuginfo
-%define with_debuginfo 0
+%define with_debuginfo %{?_without_debuginfo: 0} %{?!_without_debuginfo: 1}
 # kernel-abi-stablelists
 %define with_kernel_abi_stablelists %{?_without_kernel_abi_stablelists: 0} %{?!_without_kernel_abi_stablelists: 1}
 # internal samples and selftests
@@ -288,10 +288,6 @@ Summary: The Linux kernel
 # gcov support
 %define with_gcov %{?_with_gcov:1}%{?!_with_gcov:0}
 
-#
-# ipa_clone support
-%define with_ipaclones %{?_without_ipaclones: 0} %{?!_without_ipaclones: 1}
-
 # Want to build a vanilla kernel build without any non-upstream patches?
 %define with_vanilla %{?_with_vanilla: 1} %{?!_with_vanilla: 0}
 
@@ -308,8 +304,6 @@ Summary: The Linux kernel
 # Kernel headers are being split out into a separate package
 %define with_headers 0
 %define with_cross_headers 0
-# no ipa_clone for now
-%define with_ipaclones 0
 # no stablelist
 %define with_kernel_abi_stablelists 0
 %define with_arm64_64k 0
@@ -334,8 +328,6 @@ Summary: The Linux kernel
 %global clang_make_opts %{clang_make_opts} LLVM=1
 %endif
 %global make_opts %{make_opts} %{clang_make_opts}
-# clang does not support the -fdump-ipa-clones option
-%global with_ipaclones 0
 %endif
 
 # turn off debug kernel and kabichk for gcov builds
@@ -351,16 +343,6 @@ Summary: The Linux kernel
 # turn off kABI DWARF-based check if we're generating the base dataset
 %if %{with_kabidw_base}
 %define with_kabidwchk 0
-%endif
-
-# kpatch_kcflags are extra compiler flags applied to base kernel
-# -fdump-ipa-clones is enabled only for base kernels on selected arches
-%if %{with_ipaclones}
-%ifarch x86_64 ppc64le
-%define kpatch_kcflags -fdump-ipa-clones
-%else
-%define with_ipaclones 0
-%endif
 %endif
 
 %define make_target bzImage
@@ -401,7 +383,6 @@ Summary: The Linux kernel
 %define with_tools 0
 %define with_kernel_abi_stablelists 0
 %define with_selftests 0
-%define with_ipaclones 0
 %endif
 
 # if requested, only build debug kernel
@@ -413,7 +394,6 @@ Summary: The Linux kernel
 %define with_tools 0
 %define with_kernel_abi_stablelists 0
 %define with_selftests 0
-%define with_ipaclones 0
 %endif
 
 # if requested, only build realtime kernel
@@ -429,7 +409,6 @@ Summary: The Linux kernel
 %define with_tools 0
 %define with_kernel_abi_stablelists 0
 %define with_selftests 0
-%define with_ipaclones 0
 %define with_headers 0
 %define with_efiuki 0
 %define with_zfcpdump 0
@@ -474,7 +453,6 @@ Summary: The Linux kernel
 %define with_kabichk 0
 %define with_kernel_abi_stablelists 0
 %define with_kabidw_base 0
-%define with_ipaclones 0
 %endif
 
 
@@ -692,7 +670,7 @@ Summary: The Linux kernel
 
 
 Name: %{package_name}
-License: ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-2-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR CDDL-1.0) AND ((GPL-2.0-only WITH Linux-syscall-note) OR Linux-OpenIB) AND ((GPL-2.0-only WITH Linux-syscall-note) OR MIT) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR MIT) AND 0BSD AND BSD-2-Clause AND (BSD-2-Clause OR Apache-2.0) AND BSD-3-Clause AND BSD-3-Clause-Clear AND CC0-1.0 AND GFDL-1.1-no-invariants-or-later AND GPL-1.0-or-later AND (GPL-1.0-or-later OR BSD-3-Clause) AND (GPL-1.0-or-later WITH Linux-syscall-note) AND GPL-2.0-only AND (GPL-2.0-only OR Apache-2.0) AND (GPL-2.0-only OR BSD-2-Clause) AND (GPL-2.0-only OR BSD-3-Clause) AND (GPL-2.0-only OR CDDL-1.0) AND (GPL-2.0-only OR GFDL-1.1-no-invariants-or-later) AND (GPL-2.0-only OR GFDL-1.2-no-invariants-only) AND (GPL-2.0-only WITH Linux-syscall-note) AND GPL-2.0-or-later AND (GPL-2.0-or-later OR BSD-2-Clause) AND (GPL-2.0-or-later OR BSD-3-Clause) AND (GPL-2.0-or-later OR CC-BY-4.0) AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (GPL-2.0-or-later WITH Linux-syscall-note) AND ISC AND LGPL-2.0-or-later AND (LGPL-2.0-or-later OR BSD-2-Clause) AND (LGPL-2.0-or-later WITH Linux-syscall-note) AND LGPL-2.1-only AND (LGPL-2.1-only OR BSD-2-Clause) AND (LGPL-2.1-only WITH Linux-syscall-note) AND LGPL-2.1-or-later AND (LGPL-2.1-or-later WITH Linux-syscall-note) AND (Linux-OpenIB OR GPL-2.0-only) AND (Linux-OpenIB OR GPL-2.0-only OR BSD-2-Clause) AND Linux-man-pages-copyleft AND MIT AND (MIT OR Apache-2.0) AND (MIT OR GPL-2.0-only) AND (MIT OR GPL-2.0-or-later) AND (MIT OR LGPL-2.1-only) AND (MPL-1.1 OR GPL-2.0-only) AND (X11 OR GPL-2.0-only) AND (X11 OR GPL-2.0-or-later) AND Zlib AND (copyleft-next-0.3.1 OR GPL-2.0-or-later)
+License: ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-2-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR CDDL-1.0) AND ((GPL-2.0-only WITH Linux-syscall-note) OR Linux-OpenIB) AND ((GPL-2.0-only WITH Linux-syscall-note) OR MIT) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR MIT) AND 0BSD AND BSD-2-Clause AND (BSD-2-Clause OR Apache-2.0) AND BSD-3-Clause AND BSD-3-Clause-Clear AND CC0-1.0 AND GFDL-1.1-no-invariants-or-later AND GPL-1.0-or-later AND (GPL-1.0-or-later OR BSD-3-Clause) AND (GPL-1.0-or-later WITH Linux-syscall-note) AND GPL-2.0-only AND (GPL-2.0-only OR Apache-2.0) AND (GPL-2.0-only OR BSD-2-Clause) AND (GPL-2.0-only OR BSD-3-Clause) AND (GPL-2.0-only OR CDDL-1.0) AND (GPL-2.0-only OR GFDL-1.1-no-invariants-or-later) AND (GPL-2.0-only OR GFDL-1.2-no-invariants-only) AND (GPL-2.0-only OR GFDL-1.2-no-invariants-or-later) AND (GPL-2.0-only WITH Linux-syscall-note) AND GPL-2.0-or-later AND (GPL-2.0-or-later OR BSD-2-Clause) AND (GPL-2.0-or-later OR BSD-3-Clause) AND (GPL-2.0-or-later OR CC-BY-4.0) AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (GPL-2.0-or-later WITH Linux-syscall-note) AND ISC AND LGPL-2.0-or-later AND (LGPL-2.0-or-later OR BSD-2-Clause) AND (LGPL-2.0-or-later WITH Linux-syscall-note) AND LGPL-2.1-only AND (LGPL-2.1-only OR BSD-2-Clause) AND (LGPL-2.1-only WITH Linux-syscall-note) AND LGPL-2.1-or-later AND (LGPL-2.1-or-later WITH Linux-syscall-note) AND (Linux-OpenIB OR GPL-2.0-only) AND (Linux-OpenIB OR GPL-2.0-only OR BSD-2-Clause) AND Linux-man-pages-copyleft AND MIT AND (MIT OR Apache-2.0) AND (MIT OR GPL-2.0-only) AND (MIT OR GPL-2.0-or-later) AND (MIT OR LGPL-2.1-only) AND (MPL-1.1 OR GPL-2.0-only) AND (X11 OR GPL-2.0-only) AND (X11 OR GPL-2.0-or-later) AND Zlib AND (copyleft-next-0.3.1 OR GPL-2.0-or-later)
 URL: https://www.kernel.org/
 Version: %{specrpmversion}
 Release: %{pkg_release}
@@ -717,10 +695,12 @@ Provides: installonlypkg(kernel)
 #
 BuildRequires: kmod, bash, coreutils, tar, git-core, which
 BuildRequires: bzip2, xz, findutils, m4, perl-interpreter, perl-Carp, perl-devel, perl-generators, make, diffutils, gawk, %compression
-BuildRequires: gcc, binutils, redhat-rpm-config, hmaccalc, bison, flex, gcc-c++
-%if 0%{?fedora}
-BuildRequires: rust, rust-src, bindgen, rustfmt
+# Kernel EFI/Compression set by CONFIG_KERNEL_ZSTD
+%ifarch x86_64 aarch64 riscv64
+BuildRequires: zstd
 %endif
+BuildRequires: gcc, binutils, redhat-rpm-config, hmaccalc, bison, flex, gcc-c++
+BuildRequires: rust, rust-src, bindgen, rustfmt, clippy
 BuildRequires: net-tools, hostname, bc, elfutils-devel
 BuildRequires: dwarves
 BuildRequires: python3
@@ -761,6 +741,9 @@ BuildRequires: libcap-devel libcap-ng-devel
 BuildRequires: python3-docutils
 BuildRequires: libtraceevent-devel
 BuildRequires: libtracefs-devel
+BuildRequires: libbpf-devel
+BuildRequires: bpftool
+BuildRequires: clang
 
 %ifnarch s390x
 BuildRequires: pciutils-devel
@@ -772,6 +755,7 @@ BuildRequires: libnl3-devel
 
 %if %{with_tools} && %{with_ynl}
 BuildRequires: python3-pyyaml python3-jsonschema python3-pip python3-setuptools >= 61
+BuildRequires: (python3-wheel if python3-setuptools < 70)
 %endif
 
 %if %{with_tools} || %{signmodules} || %{signkernel}
@@ -831,12 +815,15 @@ BuildRequires: binutils-%{_build_arch}-linux-gnu, gcc-%{_build_arch}-linux-gnu
 %define cross_opts CROSS_COMPILE=%{_build_arch}-linux-gnu-
 %define __strip %{_build_arch}-linux-gnu-strip
 
+%if 0%{?fedora} && 0%{?fedora} <= 41
 # Work around find-debuginfo for cross builds.
 # find-debuginfo doesn't support any of CROSS options (RHEL-21797),
 # and since debugedit > 5.0-16.el10, or since commit
 #   dfe1f7ff30f4 ("find-debuginfo.sh: Exit with real exit status in parallel jobs")
-# it now aborts and build fails.
+# it now aborts on failure and build fails.
+# debugedit-5.1-5 in F42 added support to override tools with target versions.
 %undefine _include_gdb_index
+%endif
 %endif
 
 # These below are required to build man pages
@@ -1316,6 +1303,7 @@ Epoch: %{gemini}
 Summary: Real-Time Linux Analysis tools
 Requires: libtraceevent
 Requires: libtracefs
+Requires: libbpf
 %ifarch %{cpupowerarchs}
 Requires: %{package_name}-tools-libs = %{version}-%{release}
 %endif
@@ -1445,18 +1433,6 @@ Requires: %{package_name}%{?1:-%{1}}-devel = %{specrpmversion}-%{release}\
 Requires: %{package_name}%{?1:-%{1}}-core = %{specrpmversion}-%{release}\
 %description %{?1:%{1}-}devel-matched\
 This meta package is used to install matching core and devel packages for a given %{?2:%{2} }kernel.\
-%{nil}
-
-#
-# kernel-<variant>-ipaclones-internal package
-#
-%define kernel_ipaclones_package() \
-%package %{?1:%{1}-}ipaclones-internal\
-Summary: *.ipa-clones files generated by -fdump-ipa-clones for kernel%{?1:-%{1}}\
-Group: System Environment/Kernel\
-AutoReqProv: no\
-%description %{?1:%{1}-}ipaclones-internal\
-This package provides *.ipa-clones files.\
 %{nil}
 
 #
@@ -1839,10 +1815,6 @@ Prebuilt 64k unified kernel image for virtual machines.
 Prebuilt 64k unified kernel image addons for virtual machines.
 %endif
 
-%if %{with_ipaclones}
-%kernel_ipaclones_package
-%endif
-
 %define log_msg() \
 	{ set +x; } 2>/dev/null \
 	_log_msglineno=$(grep -n %{*} %{_specdir}/${RPM_PACKAGE_NAME}.spec | grep log_msg | cut -d":" -f1) \
@@ -2199,12 +2171,13 @@ InitBuildVars() {
     %{log_msg "InitBuildVars: USING ARCH=$Arch"}
 
     KCFLAGS="%{?kcflags}"
+}
 
-    # add kpatch flags for base kernel
-    %{log_msg "InitBuildVars: Configure KCFLAGS"}
-    if [ "$Variant" == "" ]; then
-        KCFLAGS="$KCFLAGS %{?kpatch_kcflags}"
-    fi
+#Build bootstrap bpftool
+BuildBpftool(){
+    export BPFBOOTSTRAP_CFLAGS=$(echo "%{__global_compiler_flags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
+    export BPFBOOTSTRAP_LDFLAGS=$(echo "%{__global_ldflags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
+    CFLAGS="" LDFLAGS="" make EXTRA_CFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_CXXFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_LDFLAGS="${BPFBOOTSTRAP_LDFLAGS}" %{?make_opts} %{?clang_make_opts} V=1 -C tools/bpf/bpftool bootstrap
 }
 
 BuildKernel() {
@@ -2297,10 +2270,10 @@ BuildKernel() {
     install -m 644 System.map $RPM_BUILD_ROOT/boot/System.map-$KernelVer
     install -m 644 System.map $RPM_BUILD_ROOT/lib/modules/$KernelVer/System.map
 
-    %{log_msg "Create initrfamfs"}
+    %{log_msg "Reserving 40MB in boot for initramfs"}
     # We estimate the size of the initramfs because rpm needs to take this size
     # into consideration when performing disk space calculations. (See bz #530778)
-    dd if=/dev/zero of=$RPM_BUILD_ROOT/boot/initramfs-$KernelVer.img bs=1M count=20
+    dd if=/dev/zero of=$RPM_BUILD_ROOT/boot/initramfs-$KernelVer.img bs=1M count=40
 
     if [ -f arch/$Arch/boot/zImage.stub ]; then
       %{log_msg "Copy zImage.stub to RPM_BUILD_ROOT"}
@@ -2934,10 +2907,7 @@ BuildKernel() {
     if [ "$Variant" != "zfcpdump" ]; then
 	%{log_msg "Build the bootstrap bpftool to generate vmlinux.h"}
         # Build the bootstrap bpftool to generate vmlinux.h
-        export BPFBOOTSTRAP_CFLAGS=$(echo "%{__global_compiler_flags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
-        export BPFBOOTSTRAP_LDFLAGS=$(echo "%{__global_ldflags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
-        CFLAGS="" LDFLAGS="" make EXTRA_CFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_CXXFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_LDFLAGS="${BPFBOOTSTRAP_LDFLAGS}" %{?make_opts} %{?clang_make_opts} V=1 -C tools/bpf/bpftool bootstrap
-
+        BuildBpftool
         tools/bpf/bpftool/bootstrap/bpftool btf dump file vmlinux format c > $RPM_BUILD_ROOT/$DevelDir/vmlinux.h
     fi
 %endif
@@ -2977,18 +2947,6 @@ BuildKernel() {
             chmod 0644 $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/%{signing_key_filename}
         fi
         %endif
-    fi
-%endif
-
-%if %{with_ipaclones}
-    %{log_msg "install IPA clones"}
-    MAXPROCS=$(echo %{?_smp_mflags} | sed -n 's/-j\s*\([0-9]\+\)/\1/p')
-    if [ -z "$MAXPROCS" ]; then
-        MAXPROCS=1
-    fi
-    if [ "$Variant" == "" ]; then
-        mkdir -p $RPM_BUILD_ROOT/$DevelDir-ipaclones
-        find . -name '*.ipa-clones' | xargs -i{} -r -n 1 -P $MAXPROCS install -m 644 -D "{}" "$RPM_BUILD_ROOT/$DevelDir-ipaclones/{}"
     fi
 %endif
 
@@ -3180,7 +3138,10 @@ pushd tools/tracing/rtla
 popd
 %endif
 
-if [ -f $DevelDir/vmlinux.h ]; then
+#set RPM_VMLINUX_H
+if [ -f $RPM_BUILD_ROOT/$DevelDir/vmlinux.h ]; then
+  RPM_VMLINUX_H=$RPM_BUILD_ROOT/$DevelDir/vmlinux.h
+elif [ -f $DevelDir/vmlinux.h ]; then
   RPM_VMLINUX_H=$DevelDir/vmlinux.h
 fi
 echo "${RPM_VMLINUX_H}" > ../vmlinux_h_path
@@ -3201,8 +3162,13 @@ if [ ! -f include/generated/autoconf.h ]; then
    %{make} %{?_smp_mflags} modules_prepare
 fi
 
+# Build BPFtool for samples/bpf
+if [ ! -f tools/bpf/bpftool/bootstrap/bpftool ]; then
+  BuildBpftool
+fi
+
 %{log_msg "build samples/bpf"}
-%{make} %{?_smp_mflags} ARCH=$Arch V=1 M=samples/bpf/ VMLINUX_H="${RPM_VMLINUX_H}" || true
+%{make} %{?_smp_mflags} ARCH=$Arch BPFTOOL=$(pwd)/tools/bpf/bpftool/bootstrap/bpftool V=1 M=samples/bpf/ VMLINUX_H="${RPM_VMLINUX_H}" || true
 
 pushd tools/testing/selftests
 # We need to install here because we need to call make with ARCH set which
@@ -3214,7 +3180,7 @@ pushd tools/testing/selftests
 %endif
 
 %{log_msg "main selftests compile"}
-%{make} %{?_smp_mflags} ARCH=$Arch V=1 TARGETS="bpf cgroup mm net net/forwarding net/mptcp net/netfilter tc-testing memfd drivers/net/bonding iommu cachestat" SKIP_TARGETS="" $force_targets INSTALL_PATH=%{buildroot}%{_libexecdir}/kselftests VMLINUX_H="${RPM_VMLINUX_H}" install
+%{make} %{?_smp_mflags} ARCH=$Arch V=1 TARGETS="bpf cgroup mm net net/forwarding net/mptcp net/netfilter net/packetdrill tc-testing memfd drivers/net/bonding iommu cachestat" SKIP_TARGETS="" $force_targets INSTALL_PATH=%{buildroot}%{_libexecdir}/kselftests VMLINUX_H="${RPM_VMLINUX_H}" install
 
 %ifarch %{klptestarches}
 	# kernel livepatching selftest test_modules will build against
@@ -3308,12 +3274,24 @@ find Documentation -type d | xargs chmod u+w
   rm -rf $RPM_BUILD_ROOT/usr/lib/debug/usr/src; \
 %{nil}
 
+# Make debugedit and gdb-add-index use target versions of tools
+# when cross-compiling. This is supported since debugedit-5.1-5.fc42
+# https://inbox.sourceware.org/debugedit/20250220153858.963312-1-mark@klomp.org/
+%if %{with_cross}
+%define __override_target_tools_for_debugedit \
+	export OBJCOPY=%{_build_arch}-linux-gnu-objcopy \
+	export NM=%{_build_arch}-linux-gnu-nm \
+	export READELF=%{_build_arch}-linux-gnu-readelf \
+%{nil}
+%endif
+
 #
 # Disgusting hack alert! We need to ensure we sign modules *after* all
 # invocations of strip occur, which is in __debug_install_post if
 # find-debuginfo.sh runs, and __os_install_post if not.
 #
 %define __spec_install_post \
+  %{?__override_target_tools_for_debugedit:%{__override_target_tools_for_debugedit}}\
   %{?__debug_package:%{__debug_install_post}}\
   %{__arch_install_post}\
   %{__os_install_post}\
@@ -3572,6 +3550,12 @@ pushd tools/testing/selftests/net/netfilter
 find -type d -exec install -d %{buildroot}%{_libexecdir}/kselftests/net/netfilter/{} \;
 find -type f -executable -exec install -D -m755 {} %{buildroot}%{_libexecdir}/kselftests/net/netfilter/{} \;
 find -type f ! -executable -exec install -D -m644 {} %{buildroot}%{_libexecdir}/kselftests/net/netfilter/{} \;
+popd
+# install net/packetdrill selftests
+pushd tools/testing/selftests/net/packetdrill
+find -type d -exec install -d %{buildroot}%{_libexecdir}/kselftests/net/packetdrill/{} \;
+find -type f -executable -exec install -D -m755 {} %{buildroot}%{_libexecdir}/kselftests/net/packetdrill/{} \;
+find -type f ! -executable -exec install -D -m644 {} %{buildroot}%{_libexecdir}/kselftests/net/packetdrill/{} \;
 popd
 
 # install memfd selftests
@@ -4020,7 +4004,7 @@ fi\
 %files -n %{package_name}-tools-libs
 %ifarch %{cpupowerarchs}
 %{_libdir}/libcpupower.so.1
-%{_libdir}/libcpupower.so.0.0.1
+%{_libdir}/libcpupower.so.1.0.1
 %endif
 
 %files -n %{package_name}-tools-libs-devel
@@ -4055,6 +4039,7 @@ fi\
 %{_mandir}/man1/rv-mon-wip.1.gz
 %{_mandir}/man1/rv-mon-wwnr.1.gz
 %{_mandir}/man1/rv-mon.1.gz
+%{_mandir}/man1/rv-mon-sched.1.gz
 %{_mandir}/man1/rv.1.gz
 
 # with_tools
@@ -4225,19 +4210,6 @@ fi\
 %kernel_variant_files %{_use_vdso} %{with_zfcpdump} zfcpdump
 %kernel_variant_files %{_use_vdso} %{with_arm64_16k_base} 16k
 %kernel_variant_files %{_use_vdso} %{with_arm64_64k_base} 64k
-
-%define kernel_variant_ipaclones(k:) \
-%if %{1}\
-%if %{with_ipaclones}\
-%{expand:%%files %{?2:%{2}-}ipaclones-internal}\
-%defattr(-,root,root)\
-%defverify(not mtime)\
-/usr/src/kernels/%{KVERREL}%{?2:+%{2}}-ipaclones\
-%endif\
-%endif\
-%{nil}
-
-%kernel_variant_ipaclones %{with_up_base}
 
 # plz don't put in a version string unless you're going to tag
 # and build.

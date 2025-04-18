@@ -11,5 +11,5 @@
 # 
 # 
 # 
-# Commit: e53cb43e5db3a (mfd: Add new driver for MAX77705 PMIC)
+# Commit: c8d50f029748 (mfd: Add new driver for MAX77705 PMIC)
 # CONFIG_MFD_MAX77705 is not set
