@@ -309,6 +309,7 @@
 	{"SLIM TX" #id, NULL, "CDC_IF TX" #id " MUX"}
 
 #define WCD934X_MAX_MICBIAS	MIC_BIAS_4
+#define NUM_CODEC_DAIS          9
 
 enum {
 	SIDO_SOURCE_INTERNAL,
@@ -2262,7 +2263,7 @@ static irqreturn_t wcd934x_slim_irq_handler(int irq, void *data)
 {
 	struct wcd934x_codec *wcd = data;
 	unsigned long status = 0;
-	int i, j, port_id;
+	unsigned int i, j, port_id;
 	unsigned int val, int_val = 0;
 	irqreturn_t ret = IRQ_NONE;
 	bool tx;

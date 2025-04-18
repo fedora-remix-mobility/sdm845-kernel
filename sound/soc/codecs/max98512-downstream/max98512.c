@@ -581,10 +581,10 @@ static int max98512_dai_set_fmt(struct snd_soc_dai *codec_dai,
 	msg_maxim("%s: fmt 0x%08X\n", __func__, fmt);
 
 	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
-	case SND_SOC_DAIFMT_CBS_CFS:
+	case SND_SOC_DAIFMT_CBC_CFC:
 		mode = MAX98512_PCM_MASTER_MODE_SLAVE;
 		break;
-	case SND_SOC_DAIFMT_CBM_CFM:
+	case SND_SOC_DAIFMT_CBP_CFP:
 		max98512->master = true;
 		mode = MAX98512_PCM_MASTER_MODE_MASTER;
 		break;

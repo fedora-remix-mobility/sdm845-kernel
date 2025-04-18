@@ -10,8 +10,7 @@
 #define AIF3_PB                 4
 #define AIF3_CAP                5
 #define AIF4_PB                 6
-#define	AIF4_VIFEED             7
-#define	AIF4_MAD_TX             8
-#define NUM_CODEC_DAIS          9
+#define AIF4_VIFEED             7
+#define AIF4_MAD_TX             8
 
 #endif

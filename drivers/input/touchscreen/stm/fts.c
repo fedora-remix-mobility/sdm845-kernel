@@ -1544,8 +1544,7 @@ static int touchsim_start(struct fts_touchsim *touchsim)
 	release_all_touches(info);
 
 	/* setup and start a hr timer to be fired every 120Hz(~8.333333ms) */
-	hrtimer_init(&touchsim->hr_timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS);
-	touchsim->hr_timer.function = touchsim_timer_cb;
+	hrtimer_setup(&touchsim->hr_timer, touchsim_timer_cb, CLOCK_MONOTONIC, HRTIMER_MODE_ABS);
 	hrtimer_start(&touchsim->hr_timer,
 			ns_to_ktime(TOUCHSIM_TIMER_INTERVAL_NS),
 			HRTIMER_MODE_ABS);
